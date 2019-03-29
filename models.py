@@ -32,9 +32,9 @@ class Bear:
     def update(self, delta):
         self.move(self.direction)
 
-    def on_key_press(self,key,key_modifier):
-        if key in KEY_MAP:
-            self.next_direction = KEY_MAP[key]
+    def on_key_press(self, key_modifier):
+        if key == arcade.key.RIGHT:
+            self.x += 1
 
 class World:
     def __init__(self, width, height):

@@ -13,6 +13,8 @@ class BearSprite:
     def draw(self,x,y):
         self.sprite.set_position(x,y)
         self.sprite.draw()
+    
+
 
 class BearWindow(arcade.Window):
     def __init__(self, width, height):
