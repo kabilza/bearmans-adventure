@@ -25,9 +25,6 @@ class Bear:
         self.y = y
         self.direction = DIR_STILL
 
-    # def on_draw(self):
-    #     self.set_position(self.x, self..y)
-
     def move(self, direction):
         self.x += MOVEMENT_SPEED * DIR_OFFSETS[direction][0]
         self.y += MOVEMENT_SPEED * DIR_OFFSETS[direction][1]
@@ -35,9 +32,19 @@ class Bear:
     def update(self, delta):
         self.move(self.direction)
 
+    def on_key_press(self,key,key_modifier):
+        if key in KEY_MAP:
+            self.next_direction = KEY_MAP[key]
+
 class World:
     def __init__(self, width, height):
         self.width = width
         self.height = height
 
         self.bear = Bear(self, 60, 100)
+    
+    def on_key_press(self,key,key_modifier):
+        self.bear.on_key_press(key,key_modifier)
+        
+    def update(self, delta):
+        self.bear.update(delta)

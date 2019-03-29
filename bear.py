@@ -2,10 +2,10 @@ from models import Bear, World
 
 import arcade
 
-SCREEN_WIDTH = 1024
-SCREEN_HEIGHT = 576
+SCREEN_WIDTH = 2048
+SCREEN_HEIGHT = 1152
 
-SPRITE_SCALING = 0.75
+SPRITE_SCALING = 1.5
 
 class BearSprite:
     def __init__(self):
@@ -19,8 +19,8 @@ class BearWindow(arcade.Window):
         super().__init__(width, height)
 
         self.bear_sprite = BearSprite()
-        self.bear_sprite.center_x = SCREEN_WIDTH - 90
-        self.bear_sprite.center_y = SCREEN_HEIGHT - 500
+        self.bear_sprite.center_x = SCREEN_WIDTH - 180
+        self.bear_sprite.center_y = SCREEN_HEIGHT - 1000
 
         self.background = arcade.load_texture("images/BG.png")
         self.world = World(width,height)
@@ -31,6 +31,13 @@ class BearWindow(arcade.Window):
         arcade.draw_texture_rectangle(SCREEN_WIDTH // 2, SCREEN_HEIGHT // 2, SCREEN_WIDTH, SCREEN_HEIGHT, self.background)
 
         self.bear_sprite.draw(self.world.bear.x,self.world.bear.y)
+
+    def on_key_press(self,key,key_modifier):
+        self.world.on_key_press(key,key_modifier)
+
+    def update(self, delta):
+        self.world.update(delta)
+
 
 
 
