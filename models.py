@@ -25,6 +25,8 @@ class Bear:
         self.y = y
         self.direction = DIR_STILL
 
+        self.next_direction = DIR_STILL
+
     def move(self, direction):
         self.x += MOVEMENT_SPEED * DIR_OFFSETS[direction][0]
         self.y += MOVEMENT_SPEED * DIR_OFFSETS[direction][1]
@@ -32,9 +34,11 @@ class Bear:
     def update(self, delta):
         self.move(self.direction)
 
-    def on_key_press(self, key_modifier):
-        if key == arcade.key.RIGHT:
-            self.x += 1
+    def on_key_press(self, key, key_modifier):
+        # if key == arcade.key.RIGHT:
+        #     self.x += 1
+        if key in KEY_MAP:
+            self.next_direction = KEY_MAP[key]
 
 class World:
     def __init__(self, width, height):
