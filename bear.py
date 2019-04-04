@@ -37,6 +37,9 @@ class BearWindow(arcade.Window):
     def on_key_press(self,key,key_modifier):
         self.world.on_key_press(key,key_modifier)
 
+    def on_key_release(self,key,key_modifier):
+        self.world.on_key_release(key,key_modifier)
+
     def update(self, delta):
         self.world.update(delta)
 

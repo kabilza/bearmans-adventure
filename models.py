@@ -23,22 +23,37 @@ class Bear:
         self.world = world
         self.x = x
         self.y = y
+        self.vx = 0
+        self.vy = 0
         self.direction = DIR_STILL
 
         self.next_direction = DIR_STILL
 
-    def move(self, direction):
-        self.x += MOVEMENT_SPEED * DIR_OFFSETS[direction][0]
-        self.y += MOVEMENT_SPEED * DIR_OFFSETS[direction][1]
 
     def update(self, delta):
-        self.move(self.direction)
+        self.x += self.vx
+        self.y += self.vy
 
     def on_key_press(self, key, key_modifier):
-        # if key == arcade.key.RIGHT:
-        #     self.x += 1
-        if key in KEY_MAP:
-            self.next_direction = KEY_MAP[key]
+        if key == arcade.key.RIGHT:
+            self.vx = 5
+        if key == arcade.key.LEFT:
+            self.vx = -5
+        if key == arcade.key.UP:
+            self.vy = 5  
+        if key == arcade.key.DOWN:
+            self.vy = -5 
+
+    def on_key_release(self,key,key_modifier):
+        if key == arcade.key.RIGHT:
+            self.vx = 0
+        if key == arcade.key.LEFT:
+            self.vx = 0
+        if key == arcade.key.UP:
+            self.vy = 0
+        if key == arcade.key.DOWN:
+            self.vy = 0
+        
 
 class World:
     def __init__(self, width, height):
@@ -49,6 +64,9 @@ class World:
     
     def on_key_press(self,key,key_modifier):
         self.bear.on_key_press(key,key_modifier)
+
+    def on_key_release(self,key,key_modifier):
+        self.bear.on_key_release(key,key_modifier)
         
     def update(self, delta):
         self.bear.update(delta)
