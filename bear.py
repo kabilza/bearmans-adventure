@@ -7,9 +7,18 @@ SCREEN_HEIGHT = 1152
 
 SPRITE_SCALING = 1.5
 
+
 class BearSprite:
     def __init__(self):
         self.sprite = arcade.Sprite('images/BearSprite1.png',scale = SPRITE_SCALING)
+    def draw(self,x,y):
+        self.sprite.set_position(x,y)
+        self.sprite.draw()
+
+
+class PlatformSprite:
+    def __init__(self):
+        self.sprite = arcade.Sprite('images/Platform1.png')
     def draw(self,x,y):
         self.sprite.set_position(x,y)
         self.sprite.draw()
@@ -23,6 +32,10 @@ class BearWindow(arcade.Window):
         self.bear_sprite = BearSprite()
         self.bear_sprite.center_x = SCREEN_WIDTH - 180
         self.bear_sprite.center_y = SCREEN_HEIGHT - 1000
+
+        self.platform_sprite = PlatformSprite()
+        self.platform_sprite.center_x = SCREEN_WIDTH - 100
+        self.platform_sprite.center_y = SCREEN_HEIGHT - 100
 
         self.background = arcade.load_texture("images/BG.png")
         self.world = World(width,height)
