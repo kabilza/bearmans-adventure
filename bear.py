@@ -18,7 +18,7 @@ class BearSprite:
 
 class PlatformSprite:
     def __init__(self):
-        self.sprite = arcade.Sprite('images/Platform1.png')
+        self.sprite = arcade.Sprite('images/Platform.png', scale = 1)
     def draw(self,x,y):
         self.sprite.set_position(x,y)
         self.sprite.draw()
@@ -46,6 +46,8 @@ class BearWindow(arcade.Window):
         arcade.draw_texture_rectangle(SCREEN_WIDTH // 2, SCREEN_HEIGHT // 2, SCREEN_WIDTH, SCREEN_HEIGHT, self.background)
 
         self.bear_sprite.draw(self.world.bear.x,self.world.bear.y)
+        for i in self.world.platform:
+            self.platform_sprite.draw(i.x,i.y)
 
     def on_key_press(self,key,key_modifier):
         self.world.on_key_press(key,key_modifier)

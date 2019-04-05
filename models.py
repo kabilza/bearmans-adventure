@@ -36,13 +36,13 @@ class Bear:
 
     def on_key_press(self, key, key_modifier):
         if key == arcade.key.RIGHT:
-            self.vx = 5
+            self.vx = 10
         if key == arcade.key.LEFT:
-            self.vx = -5
+            self.vx = -10
         if key == arcade.key.UP:
-            self.vy = 5  
+            self.vy = 10
         if key == arcade.key.DOWN:
-            self.vy = -5 
+            self.vy = -10
 
     def on_key_release(self,key,key_modifier):
         if key == arcade.key.RIGHT:
@@ -54,13 +54,43 @@ class Bear:
         if key == arcade.key.DOWN:
             self.vy = 0
         
+class Platform:
+    def __init__(self, world, x, y):
+        self.world = world
+        self.x = x
+        self.y = y
+        self.vx = 0
+        self.vy = 0
+    def update(self, delta):
+        self.x = self.x
+        self.y = self.y
 
 class World:
     def __init__(self, width, height):
         self.width = width
         self.height = height
 
-        self.bear = Bear(self, 60, 100)
+        self.bear = Bear(self, 60, 200)
+        self.platform = []
+        #lv1
+        self.platform.append(Platform(self, 0, 100))
+        self.platform.append(Platform(self, 1208, 100))
+        self.platform.append(Platform(self, 2416, 100))
+
+        #lv2
+        self.platform.append(Platform(self, 0, 350))
+        self.platform.append(Platform(self, 1500, 350))
+
+        #lv3
+        self.platform.append(Platform(self, -300, 600))
+        self.platform.append(Platform(self, 1350, 600))
+        self.platform.append(Platform(self, 2416, 100))
+
+        #lv4
+        self.platform.append(Platform(self, -600, 600))
+        self.platform.append(Platform(self, 1208, 600))
+        self.platform.append(Platform(self, 500, 100))
+
     
     def on_key_press(self,key,key_modifier):
         self.bear.on_key_press(key,key_modifier)
