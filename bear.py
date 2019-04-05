@@ -27,7 +27,7 @@ class PlatformSprite:
 
 class BearWindow(arcade.Window):
     def __init__(self, width, height):
-        super().__init__(width, height)
+        super().__init__(width, height, "Bear's Adventure")
 
         self.bear_sprite = BearSprite()
         self.bear_sprite.center_x = SCREEN_WIDTH - 180
