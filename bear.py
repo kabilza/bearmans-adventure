@@ -47,7 +47,8 @@ class BearWindow(arcade.Window):
 
         start_x = 100
         start_y = 1100
-        arcade.draw_text(f"Time Lapse: {self.world.time}", start_x, start_y, arcade.color.BLACK, 30)
+        arcade.draw_text(f"Time Lapse: {self.world.time}:00", start_x, start_y, arcade.color.BLACK, 30)
+        arcade.draw_text(f"Bearman's Adventure", 1650, 1100, arcade.color.BLACK, 30)
 
         self.bear_sprite.draw(self.world.bear.x,self.world.bear.y)
         for i in self.world.platform:

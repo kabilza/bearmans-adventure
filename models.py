@@ -1,4 +1,4 @@
-import arcade.key, time
+import arcade.key, time, random
 
 MOVEMENT_SPEED = 4
 DIR_STILL = 0
@@ -78,24 +78,30 @@ class World:
         self.platform = []
         self.time = 0
 
+        
+    
         #lv1
         self.platform.append(Platform(self, 0, 100))
-        self.platform.append(Platform(self, 1208, 100))
-        self.platform.append(Platform(self, 2416, 100))
+        self.platform.append(Platform(self, 607, 100))
+        self.platform.append(Platform(self, 1214, 100))
+        self.platform.append(Platform(self, 1800, 100))
 
-        #lv2
-        self.platform.append(Platform(self, 0, 350))
-        self.platform.append(Platform(self, 1500, 350))
+        for i in range(50):
+            self.platform.append(Platform(self, random.randrange(-700,2048,430), random.randrange(500,2512,179)))
 
-        #lv3
-        self.platform.append(Platform(self, -300, 600))
-        self.platform.append(Platform(self, 1350, 600))
-        self.platform.append(Platform(self, 2416, 100))
+        # #lv2
+        # self.platform.append(Platform(self, 0, 350))
+        # self.platform.append(Platform(self, 1500, 350))
 
-        #lv4
-        self.platform.append(Platform(self, -600, 600))
-        self.platform.append(Platform(self, 1208, 600))
-        self.platform.append(Platform(self, 500, 100))
+        # #lv3
+        # self.platform.append(Platform(self, -300, 600))
+        # self.platform.append(Platform(self, 1350, 600))
+        # self.platform.append(Platform(self, 2416, 100))
+
+        # #lv4
+        # self.platform.append(Platform(self, -600, 600))
+        # self.platform.append(Platform(self, 1208, 600))
+        # self.platform.append(Platform(self, 500, 100))
 
     
     def on_key_press(self,key,key_modifier):
@@ -107,4 +113,5 @@ class World:
     def update(self, delta):
         self.bear.update(delta)
 
-        self.platform[3].y -= 1
+        for i in range(4,len(self.platform)):
+            self.platform[i].y -= 0.25
