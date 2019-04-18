@@ -32,9 +32,9 @@ class Bear:
 
     def update(self, delta):
         if self.x < 0:
-            self.x = 0
-        elif self.x > 2048:
             self.x = 2048
+        elif self.x > 2048:
+            self.x = 0
         self.x += self.vx
         self.y += self.vy
 

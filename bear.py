@@ -61,9 +61,6 @@ class BearWindow(arcade.Window):
 
     def update(self, delta):
         self.world.update(delta)
-        if self.bear_sprite.center_x > SCREEN_WIDTH:
-            self.bear_sprite.center_x == 0
-
 
 
 
