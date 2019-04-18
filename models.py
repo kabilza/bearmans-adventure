@@ -1,4 +1,4 @@
-import arcade.key
+import arcade.key, time
 
 MOVEMENT_SPEED = 4
 DIR_STILL = 0
@@ -31,6 +31,10 @@ class Bear:
 
 
     def update(self, delta):
+        if self.x < 0:
+            self.x = 0
+        elif self.x > 2048:
+            self.x = 2048
         self.x += self.vx
         self.y += self.vy
 
@@ -72,6 +76,8 @@ class World:
 
         self.bear = Bear(self, 60, 200)
         self.platform = []
+        self.time = 0
+
         #lv1
         self.platform.append(Platform(self, 0, 100))
         self.platform.append(Platform(self, 1208, 100))
@@ -100,3 +106,5 @@ class World:
         
     def update(self, delta):
         self.bear.update(delta)
+
+        self.platform[3].y -= 1

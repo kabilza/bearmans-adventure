@@ -45,6 +45,10 @@ class BearWindow(arcade.Window):
         arcade.start_render()
         arcade.draw_texture_rectangle(SCREEN_WIDTH // 2, SCREEN_HEIGHT // 2, SCREEN_WIDTH, SCREEN_HEIGHT, self.background)
 
+        start_x = 100
+        start_y = 1100
+        arcade.draw_text(f"Time Lapse: {self.world.time}", start_x, start_y, arcade.color.BLACK, 30)
+
         self.bear_sprite.draw(self.world.bear.x,self.world.bear.y)
         for i in self.world.platform:
             self.platform_sprite.draw(i.x,i.y)
@@ -57,6 +61,8 @@ class BearWindow(arcade.Window):
 
     def update(self, delta):
         self.world.update(delta)
+        if self.bear_sprite.center_x > SCREEN_WIDTH:
+            self.bear_sprite.center_x == 0
 
 
 
