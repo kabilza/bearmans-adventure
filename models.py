@@ -7,6 +7,10 @@ DIR_RIGHT = 2
 DIR_DOWN = 3
 DIR_LEFT = 4
 
+MOVEMENT_SPEED = 5
+JUMP_SPEED = 14
+GRAVITY = 2
+
 DIR_OFFSETS = {DIR_STILL: (0, 0),
                DIR_UP: (0, 1),
                DIR_RIGHT: (1, 0),
@@ -36,7 +40,10 @@ class Bear:
         elif self.x > 2048:
             self.x = 0
         self.x += self.vx
-        self.y += self.vy
+        if self.world.check_bear_on_plat():
+            self.y += self.vy
+        else:
+            self.y += self.vy - GRAVITY
 
     def on_key_press(self, key, key_modifier):
         if key == arcade.key.RIGHT:
@@ -68,6 +75,12 @@ class Platform:
     def update(self, delta):
         self.x = self.x
         self.y = self.y
+    def check_platform(self):
+        if self.x - 266 <= self.world.bear.x <= self.x + 266:
+            if self.world.bear.y - 67 == self.y + 9:
+                    return True
+        else:
+            return False
 
 class World:
     def __init__(self, width, height):
@@ -77,8 +90,6 @@ class World:
         self.bear = Bear(self, 60, 200)
         self.platform = []
         self.time = 0
-
-        
     
         #lv1
         self.platform.append(Platform(self, 0, 100))
@@ -86,8 +97,11 @@ class World:
         self.platform.append(Platform(self, 1214, 100))
         self.platform.append(Platform(self, 1800, 100))
 
-        for i in range(50):
-            self.platform.append(Platform(self, random.randrange(-700,2048,430), random.randrange(500,2512,179)))
+        for i in range(100):
+            n1 =random.randrange(500,2512,179)
+            if n1 == self.platform[-1].x:
+                n1 += 80
+            self.platform.append(Platform(self, random.randrange(-700,2048,430), n1))
 
         # #lv2
         # self.platform.append(Platform(self, 0, 350))
@@ -103,6 +117,12 @@ class World:
         # self.platform.append(Platform(self, 1208, 600))
         # self.platform.append(Platform(self, 500, 100))
 
+    def check_bear_on_plat(self):
+        check_list = []
+        for p in self.platform:
+            check_list.append(p.check_platform())
+        return True in check_list
+
     
     def on_key_press(self,key,key_modifier):
         self.bear.on_key_press(key,key_modifier)
@@ -112,6 +132,7 @@ class World:
         
     def update(self, delta):
         self.bear.update(delta)
+        self.bear.x
 
         for i in range(4,len(self.platform)):
-            self.platform[i].y -= 0.25
+            self.platform[i].y -= 1

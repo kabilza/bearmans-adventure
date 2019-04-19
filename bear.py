@@ -5,7 +5,11 @@ import arcade
 SCREEN_WIDTH = 2048
 SCREEN_HEIGHT = 1152
 
-SPRITE_SCALING = 1.5
+SPRITE_SCALING = 1
+
+MOVEMENT_SPEED = 5
+JUMP_SPEED = 14
+GRAVITY = 1
 
 
 class BearSprite:
@@ -18,7 +22,7 @@ class BearSprite:
 
 class PlatformSprite:
     def __init__(self):
-        self.sprite = arcade.Sprite('images/Platform.png', scale = 1)
+        self.sprite = arcade.Sprite('images/Platform6.png', scale = 1)
     def draw(self,x,y):
         self.sprite.set_position(x,y)
         self.sprite.draw()
@@ -28,6 +32,13 @@ class PlatformSprite:
 class BearWindow(arcade.Window):
     def __init__(self, width, height):
         super().__init__(width, height, "Bear's Adventure")
+
+        self.wall_list = None
+        self.enemy_list = None
+        self.player_list = None
+        self.player_sprite = None
+        self.physics_engine = None
+        self.game_over = False
 
         self.bear_sprite = BearSprite()
         self.bear_sprite.center_x = SCREEN_WIDTH - 180
@@ -44,6 +55,7 @@ class BearWindow(arcade.Window):
     def on_draw(self):
         arcade.start_render()
         arcade.draw_texture_rectangle(SCREEN_WIDTH // 2, SCREEN_HEIGHT // 2, SCREEN_WIDTH, SCREEN_HEIGHT, self.background)
+
 
         start_x = 100
         start_y = 1100
