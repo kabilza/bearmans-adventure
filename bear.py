@@ -65,6 +65,11 @@ class BearWindow(arcade.Window):
         self.bear_sprite.draw(self.world.bear.x,self.world.bear.y)
         for i in self.world.platform:
             self.platform_sprite.draw(i.x,i.y)
+            
+        #     if len(self.world.platform) < 100:
+        #         self.world.platform.pop(-1)
+        
+        # self.world.build_plat()
 
     def on_key_press(self,key,key_modifier):
         self.world.on_key_press(key,key_modifier)

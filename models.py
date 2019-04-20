@@ -9,7 +9,8 @@ DIR_LEFT = 4
 
 MOVEMENT_SPEED = 5
 JUMP_SPEED = 14
-GRAVITY = 2
+GRAVITY = 3
+IS_ALIVE = True
 
 DIR_OFFSETS = {DIR_STILL: (0, 0),
                DIR_UP: (0, 1),
@@ -97,26 +98,13 @@ class World:
         self.platform.append(Platform(self, 1214, 100))
         self.platform.append(Platform(self, 1800, 100))
 
-        for i in range(100):
-            n1 =random.randrange(500,2512,179)
-            if n1 == self.platform[-1].x:
-                n1 += 80
-            self.platform.append(Platform(self, random.randrange(-700,2048,430), n1))
-
-        # #lv2
-        # self.platform.append(Platform(self, 0, 350))
-        # self.platform.append(Platform(self, 1500, 350))
-
-        # #lv3
-        # self.platform.append(Platform(self, -300, 600))
-        # self.platform.append(Platform(self, 1350, 600))
-        # self.platform.append(Platform(self, 2416, 100))
-
-        # #lv4
-        # self.platform.append(Platform(self, -600, 600))
-        # self.platform.append(Platform(self, 1208, 600))
-        # self.platform.append(Platform(self, 500, 100))
-
+        
+    def build_plat(self):
+        n1 = random.randrange(500,2512,179)
+        if n1 == self.platform[-1].x:
+            n1 += 1000
+        self.platform.append(Platform(self, random.randrange(-700,2048,430), n1))
+    
     def check_bear_on_plat(self):
         check_list = []
         for p in self.platform:
@@ -134,5 +122,14 @@ class World:
         self.bear.update(delta)
         self.bear.x
 
+        while len(self.platform) < 60 :
+            self.build_plat()
+            
+        if len(self.platform) == 60:    
+            self.build_plat()
+        
+
         for i in range(4,len(self.platform)):
-            self.platform[i].y -= 1
+            self.platform[i].y -= 2
+            
+            
