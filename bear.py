@@ -33,11 +33,7 @@ class BearWindow(arcade.Window):
     def __init__(self, width, height):
         super().__init__(width, height, "Bear's Adventure")
 
-        self.wall_list = None
-        self.enemy_list = None
-        self.player_list = None
-        self.player_sprite = None
-        self.physics_engine = None
+        self.platform_sprite = arcade.SpriteList
         self.game_over = False
 
         self.bear_sprite = BearSprite()
@@ -52,6 +48,10 @@ class BearWindow(arcade.Window):
         self.world = World(width,height)
         arcade.set_background_color(arcade.color.SILVER)
 
+    def draw_plat(self):
+        for i in self.world.platform:
+            self.platform_sprite.draw(i.x,i.y)
+
     def on_draw(self):
         arcade.start_render()
         arcade.draw_texture_rectangle(SCREEN_WIDTH // 2, SCREEN_HEIGHT // 2, SCREEN_WIDTH, SCREEN_HEIGHT, self.background)
@@ -63,13 +63,9 @@ class BearWindow(arcade.Window):
         arcade.draw_text(f"Bearman's Adventure", 1650, 1100, arcade.color.BLACK, 30)
 
         self.bear_sprite.draw(self.world.bear.x,self.world.bear.y)
-        for i in self.world.platform:
-            self.platform_sprite.draw(i.x,i.y)
-            
-        #     if len(self.world.platform) < 100:
-        #         self.world.platform.pop(-1)
-        
-        # self.world.build_plat()
+
+        self.draw_plat()   
+
 
     def on_key_press(self,key,key_modifier):
         self.world.on_key_press(key,key_modifier)
@@ -79,12 +75,15 @@ class BearWindow(arcade.Window):
 
     def update(self, delta):
         self.world.update(delta)
+        
+            
 
 
 
 def main():
     window = BearWindow(SCREEN_WIDTH, SCREEN_HEIGHT)
     arcade.set_window(window)
+    window.world.build_plat()
     arcade.run()
 
 

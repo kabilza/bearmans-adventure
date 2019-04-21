@@ -100,10 +100,10 @@ class World:
 
         
     def build_plat(self):
-        n1 = random.randrange(500,2512,179)
+        n1 = random.randrange(-300,2048,430)
         if n1 == self.platform[-1].x:
-            n1 += 1000
-        self.platform.append(Platform(self, random.randrange(-700,2048,430), n1))
+            n1 += 200
+        self.platform.append(Platform(self, n1, random.randrange(500,1152,179)))
     
     def check_bear_on_plat(self):
         check_list = []
@@ -122,12 +122,36 @@ class World:
         self.bear.update(delta)
         self.bear.x
 
-        while len(self.platform) < 60 :
+        # if self.platform[-1].y > 0:
+        #     self.build_plat()
+
+        if self.platform[-1].y < 0:
+            self.platform.pop(5)
+            self.platform.pop(6)
+            self.platform.pop(7)
+            self.platform.pop(8)
+            self.platform.pop(9)
+            self.platform.pop(10)
+            self.platform.pop(11)
+            self.platform.pop(12)
             self.build_plat()
-            
-        if len(self.platform) == 60:    
             self.build_plat()
-        
+            self.build_plat()
+            self.build_plat()
+            self.build_plat()
+            self.build_plat()
+            self.build_plat()
+            self.build_plat()
+            self.build_plat()
+            self.build_plat()
+            self.build_plat()
+            self.build_plat()
+
+        while len(self.platform) < 20:
+            self.build_plat()
+
+        print(self.platform[-1].y)
+
 
         for i in range(4,len(self.platform)):
             self.platform[i].y -= 2
