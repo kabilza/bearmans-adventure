@@ -9,7 +9,7 @@ DIR_LEFT = 4
 
 MOVEMENT_SPEED = 5
 JUMP_SPEED = 14
-GRAVITY = 3
+GRAVITY = 12
 IS_ALIVE = True
 
 DIR_OFFSETS = {DIR_STILL: (0, 0),
@@ -52,7 +52,7 @@ class Bear:
         if key == arcade.key.LEFT:
             self.vx = -10
         if key == arcade.key.UP:
-            self.vy = 10
+            self.vy = 25
         if key == arcade.key.DOWN:
             self.vy = -10
 
@@ -78,7 +78,28 @@ class Platform:
         self.y = self.y
     def check_platform(self):
         if self.x - 266 <= self.world.bear.x <= self.x + 266:
-            if self.world.bear.y - 67 == self.y + 9:
+            if self.y - 9 <=self.world.bear.y - 67 <= self.y + 9:
+                    return True
+        else:
+            return False
+
+class Enemy:
+    def __init__(self, world, x, y):
+        self.world = world
+        self.x = x
+        self.y = y
+        self.vx = 0
+        self.vy = 0
+    def update(self, delta):
+        if self.world.check_enemy_on_plat():
+            self.world.time -= 10
+            print("HELP")
+        else:
+            self.x = self.x
+            self.y = self.y
+    def check_enemy(self):
+        if self.x == self.world.bear.x:
+            if self.y <= self.world.bear.y <= self.y:
                     return True
         else:
             return False
@@ -90,6 +111,7 @@ class World:
 
         self.bear = Bear(self, 60, 200)
         self.platform = []
+        self.enemy = []
         self.time = 0
     
         #lv1
@@ -101,15 +123,24 @@ class World:
         
     def build_plat(self):
         n1 = random.randrange(-300,2048,430)
+        n2 = random.randrange(500,1024,179)
+        n3 = random.randrange(0,100,25)
         if n1 == self.platform[-1].x:
             n1 += 200
-        self.platform.append(Platform(self, n1, random.randrange(500,1152,179)))
+        self.platform.append(Platform(self, n1, n2))
+        self.enemy.append(Enemy(self, n1+n3, n2+53))
     
     def check_bear_on_plat(self):
         check_list = []
         for p in self.platform:
             check_list.append(p.check_platform())
         return True in check_list
+
+    def check_enemy_on_plat(self):
+        check_list2 = []
+        for p in self.platform:
+            check_list2.append(p.check_enemy())
+        return True in check_list2
 
     
     def on_key_press(self,key,key_modifier):
@@ -121,11 +152,19 @@ class World:
     def update(self, delta):
         self.bear.update(delta)
         self.bear.x
-
-        # if self.platform[-1].y > 0:
-        #     self.build_plat()
-
-        if self.platform[-1].y < 0:
+        if self.platform[-1].y <= 0:
+            self.build_plat()
+            self.build_plat()
+            self.build_plat()
+            self.build_plat()
+            self.build_plat()
+            self.build_plat()
+            self.build_plat()
+            self.build_plat()
+            self.build_plat()
+            self.build_plat()
+            self.build_plat()
+            self.build_plat()
             self.platform.pop(5)
             self.platform.pop(6)
             self.platform.pop(7)
@@ -134,26 +173,33 @@ class World:
             self.platform.pop(10)
             self.platform.pop(11)
             self.platform.pop(12)
-            self.build_plat()
-            self.build_plat()
-            self.build_plat()
-            self.build_plat()
-            self.build_plat()
-            self.build_plat()
-            self.build_plat()
-            self.build_plat()
-            self.build_plat()
-            self.build_plat()
-            self.build_plat()
-            self.build_plat()
+            self.platform.pop(13)
+            self.platform.pop(14)
+            self.platform.pop(15)
+            self.platform.pop(16)
 
-        while len(self.platform) < 20:
+        if self.enemy[-1].y <= 0:
+            self.enemy.pop(0)
+            self.enemy.pop(1)
+            self.enemy.pop(1)
+            self.enemy.pop(3)
+            self.enemy.pop(4)
+            self.enemy.pop(5)
+            self.enemy.pop(6)
+            self.enemy.pop(7)
+            self.enemy.pop(8)
+            self.enemy.pop(9)
+            self.enemy.pop(10)
+            self.enemy.pop(11)
+            self.enemy.pop(12)
+            
+        while len(self.platform) < 50:
             self.build_plat()
-
-        print(self.platform[-1].y)
-
-
+        
         for i in range(4,len(self.platform)):
             self.platform[i].y -= 2
+        
+        for i in range(len(self.enemy)):
+            self.enemy[i].y -= 2
             
             
