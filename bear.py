@@ -76,10 +76,16 @@ class BearWindow(arcade.Window):
         arcade.draw_text(f"Time Lapse: {int(self.world.time)//60}:{int(self.world.time)%60:.1f}", start_x, start_y, arcade.color.BLACK, 30)
         arcade.draw_text(f"Bearman's Adventure", 1650, 1100, arcade.color.BLACK, 30)
 
+        
+
         self.bear_sprite.draw(self.world.bear.x,self.world.bear.y)
 
         self.draw_plat()   
         self.draw_enemy()
+
+        if self.world.bear.die == 1:
+            arcade.draw_text(f"Press any key to START!!!", 553, 500, arcade.color.BLACK, 60)
+            arcade.draw_text(f"Press any key to START!!!", 551, 500, arcade.color.WHITE, 59)
 
 
     def on_key_press(self,key,key_modifier):
@@ -89,8 +95,11 @@ class BearWindow(arcade.Window):
         self.world.on_key_release(key,key_modifier)
 
     def update(self, delta):
+        if self.world.bear.die == 1:
+            return
         self.world.update(delta)
         self.world.time += delta
+
         
 
 def main():

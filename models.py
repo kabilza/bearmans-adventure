@@ -31,22 +31,29 @@ class Bear:
         self.vx = 0
         self.vy = 0
         self.direction = DIR_STILL
+        self.die = 1
 
         self.next_direction = DIR_STILL
 
 
     def update(self, delta):
+        if self.world.check_enemy_on_plat():
+            self.die = 1
         if self.x < 0:
             self.x = 2048
         elif self.x > 2048:
             self.x = 0
         self.x += self.vx
+        if self.y < 0:
+            self.die =  1
+        
         if self.world.check_bear_on_plat():
             self.y += self.vy
         else:
             self.y += self.vy - GRAVITY
 
     def on_key_press(self, key, key_modifier):
+        self.die = 0
         if key == arcade.key.RIGHT:
             self.vx = 10
         if key == arcade.key.LEFT:
@@ -82,6 +89,12 @@ class Platform:
                     return True
         else:
             return False
+    def check_enemy(self):
+        if self.x - 60 <= self.world.bear.x <= self.x + 60 :
+            if self.y - 58 <= self.world.bear.y <= self.y + 58:
+                return True
+        else:
+            return False
 
 class Enemy:
     def __init__(self, world, x, y):
@@ -91,15 +104,16 @@ class Enemy:
         self.vx = 0
         self.vy = 0
     def update(self, delta):
-        if self.world.check_enemy_on_plat():
+        if self.check_enemy():
             self.world.time -= 10
             print("HELP")
+            self.world.bear.die = 1
         else:
             self.x = self.x
             self.y = self.y
     def check_enemy(self):
-        if self.x == self.world.bear.x:
-            if self.y <= self.world.bear.y <= self.y:
+        if self.x - 60 <= self.world.bear.x <= self.x + 60 :
+            if self.y - 58 <= self.world.bear.y <= self.y + 58:
                     return True
         else:
             return False
@@ -181,7 +195,7 @@ class World:
         if self.enemy[-1].y <= 0:
             self.enemy.pop(0)
             self.enemy.pop(1)
-            self.enemy.pop(1)
+            self.enemy.pop(2)
             self.enemy.pop(3)
             self.enemy.pop(4)
             self.enemy.pop(5)
@@ -195,6 +209,9 @@ class World:
             
         while len(self.platform) < 50:
             self.build_plat()
+            self.enemy.pop(0)
+            
+
         
         for i in range(4,len(self.platform)):
             self.platform[i].y -= 2
