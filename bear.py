@@ -84,6 +84,12 @@ class BearWindow(arcade.Window):
         self.draw_enemy()
 
         if self.world.bear.die == 1:
+            if self.world.session != 0:
+                arcade.draw_text(f"You survived for {int(self.world.time)//60}:{int(self.world.time)%60:.1f}!!!", 553, 700, arcade.color.BLACK, 60)
+                arcade.draw_text(f"You survived for {int(self.world.time)//60}:{int(self.world.time)%60:.1f}!!!", 553, 700, arcade.color.YELLOW, 59)
+                arcade.draw_text(f"GAME OVER!!!", 553, 600, arcade.color.BLACK, 60)
+                arcade.draw_text(f"GAME OVER!!!", 551, 600, arcade.color.WHITE, 59)
+
             arcade.draw_text(f"Press any key to START!!!", 553, 500, arcade.color.BLACK, 60)
             arcade.draw_text(f"Press any key to START!!!", 551, 500, arcade.color.WHITE, 59)
 

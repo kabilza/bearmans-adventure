@@ -12,6 +12,8 @@ JUMP_SPEED = 14
 GRAVITY = 12
 IS_ALIVE = True
 
+n3 = random.randrange(0,100,25)
+
 DIR_OFFSETS = {DIR_STILL: (0, 0),
                DIR_UP: (0, 1),
                DIR_RIGHT: (1, 0),
@@ -32,13 +34,12 @@ class Bear:
         self.vy = 0
         self.direction = DIR_STILL
         self.die = 1
+        self.jumpcount = False
 
         self.next_direction = DIR_STILL
 
 
     def update(self, delta):
-        if self.world.check_enemy_on_plat():
-            self.die = 1
         if self.x < 0:
             self.x = 2048
         elif self.x > 2048:
@@ -50,16 +51,29 @@ class Bear:
         if self.world.check_bear_on_plat():
             self.y += self.vy
         else:
-            self.y += self.vy - GRAVITY
+            if self.jumpcount == True:
+                self.y += self.vy - GRAVITY
+                self.jumpcount = False
+            else:
+                self.y += self.vy - GRAVITY
 
     def on_key_press(self, key, key_modifier):
-        self.die = 0
+        if self.die:
+            self.die = 0
+            self.world.time = 0
+            self.world.session += 1
+            self.x = 60
+            self.y = 200
         if key == arcade.key.RIGHT:
             self.vx = 10
         if key == arcade.key.LEFT:
             self.vx = -10
         if key == arcade.key.UP:
-            self.vy = 25
+            if self.jumpcount == False:
+                self.vy = 25
+                self.jumpcount = True
+            elif self.jumpcount == True:
+                self.vy = 0
         if key == arcade.key.DOWN:
             self.vy = -10
 
@@ -89,12 +103,7 @@ class Platform:
                     return True
         else:
             return False
-    def check_enemy(self):
-        if self.x - 60 <= self.world.bear.x <= self.x + 60 :
-            if self.y - 58 <= self.world.bear.y <= self.y + 58:
-                return True
-        else:
-            return False
+
 
 class Enemy:
     def __init__(self, world, x, y):
@@ -111,10 +120,11 @@ class Enemy:
         else:
             self.x = self.x
             self.y = self.y
-    def check_enemy(self):
-        if self.x - 60 <= self.world.bear.x <= self.x + 60 :
-            if self.y - 58 <= self.world.bear.y <= self.y + 58:
-                    return True
+    
+    def hit_bear(self):
+        if self.x-45 <= self.world.bear.x <= self.x+45:
+            if self.y-60 <= self.world.bear.y <= self.y+60:
+                return True
         else:
             return False
 
@@ -127,6 +137,7 @@ class World:
         self.platform = []
         self.enemy = []
         self.time = 0
+        self.session = 0
     
         #lv1
         self.platform.append(Platform(self, 0, 100))
@@ -138,7 +149,6 @@ class World:
     def build_plat(self):
         n1 = random.randrange(-300,2048,430)
         n2 = random.randrange(500,1024,179)
-        n3 = random.randrange(0,100,25)
         if n1 == self.platform[-1].x:
             n1 += 200
         self.platform.append(Platform(self, n1, n2))
@@ -150,17 +160,19 @@ class World:
             check_list.append(p.check_platform())
         return True in check_list
 
-    def check_enemy_on_plat(self):
-        check_list2 = []
-        for p in self.platform:
-            check_list2.append(p.check_enemy())
-        return True in check_list2
-
+    def ene_on_bear(self):
+        cl = []
+        for ene in self.enemy:
+            cl.append(ene.hit_bear())
+        return True in cl
     
     def on_key_press(self,key,key_modifier):
+        
         self.bear.on_key_press(key,key_modifier)
 
     def on_key_release(self,key,key_modifier):
+        if self.bear.die == 1:
+            self.bear.die = 0
         self.bear.on_key_release(key,key_modifier)
         
     def update(self, delta):
@@ -218,5 +230,9 @@ class World:
         
         for i in range(len(self.enemy)):
             self.enemy[i].y -= 2
+        
+        if self.ene_on_bear():
+            self.bear.die = 1
+        
             
             
