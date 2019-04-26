@@ -8,8 +8,8 @@ DIR_DOWN = 3
 DIR_LEFT = 4
 
 MOVEMENT_SPEED = 5
-JUMP_SPEED = 14
-GRAVITY = 12
+JUMP_SPEED = 18
+GRAVITY = -1
 IS_ALIVE = True
 
 n3 = random.randrange(0,100,25)
@@ -38,6 +38,9 @@ class Bear:
 
         self.next_direction = DIR_STILL
 
+    def jump(self):
+        self.jumpcount = True
+        self.vy = JUMP_SPEED
 
     def update(self, delta):
         if self.x < 0:
@@ -48,14 +51,24 @@ class Bear:
         if self.y < 0:
             self.die =  1
         
-        if self.world.check_bear_on_plat():
+        # if self.world.check_bear_on_plat():
+        #     self.y += self.vy - GRAVITY
+        #     if self.jumpcount == True:
+        #         self.y += self.vy
+        #         self.vy += GRAVITY
+        # else:
+        #     self.jumpcount = False
+        #     self.vy = 0
+
+        if self.jumpcount:
             self.y += self.vy
+            self.vy += GRAVITY
+             
+            if self.world.check_bear_on_plat():
+                self.vy = 0
         else:
-            if self.jumpcount == True:
-                self.y += self.vy - GRAVITY
-                self.jumpcount = False
-            else:
-                self.y += self.vy - GRAVITY
+            if not self.world.check_bear_on_plat():
+                self.vy = 0
 
     def on_key_press(self, key, key_modifier):
         if self.die:
@@ -69,11 +82,7 @@ class Bear:
         if key == arcade.key.LEFT:
             self.vx = -10
         if key == arcade.key.UP:
-            if self.jumpcount == False:
-                self.vy = 25
-                self.jumpcount = True
-            elif self.jumpcount == True:
-                self.vy = 0
+            self.jump()
         if key == arcade.key.DOWN:
             self.vy = -10
 
@@ -178,53 +187,22 @@ class World:
     def update(self, delta):
         self.bear.update(delta)
         self.bear.x
+
         if self.platform[-1].y <= 0:
-            self.build_plat()
-            self.build_plat()
-            self.build_plat()
-            self.build_plat()
-            self.build_plat()
-            self.build_plat()
-            self.build_plat()
-            self.build_plat()
-            self.build_plat()
-            self.build_plat()
-            self.build_plat()
-            self.build_plat()
-            self.platform.pop(5)
-            self.platform.pop(6)
-            self.platform.pop(7)
-            self.platform.pop(8)
-            self.platform.pop(9)
-            self.platform.pop(10)
-            self.platform.pop(11)
-            self.platform.pop(12)
-            self.platform.pop(13)
-            self.platform.pop(14)
-            self.platform.pop(15)
-            self.platform.pop(16)
+            for i in range(0,11,1):
+                self.build_plat()
+
+            for i in range(5,17,1):
+                self.platform.pop(i)
 
         if self.enemy[-1].y <= 0:
-            self.enemy.pop(0)
-            self.enemy.pop(1)
-            self.enemy.pop(2)
-            self.enemy.pop(3)
-            self.enemy.pop(4)
-            self.enemy.pop(5)
-            self.enemy.pop(6)
-            self.enemy.pop(7)
-            self.enemy.pop(8)
-            self.enemy.pop(9)
-            self.enemy.pop(10)
-            self.enemy.pop(11)
-            self.enemy.pop(12)
+            for i in range(0,13,1):
+                self.enemy.pop(i)
             
         while len(self.platform) < 50:
             self.build_plat()
             self.enemy.pop(0)
-            
 
-        
         for i in range(4,len(self.platform)):
             self.platform[i].y -= 2
         
@@ -236,3 +214,4 @@ class World:
         
             
             
+
