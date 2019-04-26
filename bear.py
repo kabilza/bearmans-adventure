@@ -9,7 +9,7 @@ SPRITE_SCALING = 1
 
 MOVEMENT_SPEED = 5
 JUMP_SPEED = 14
-GRAVITY = 1
+GRAVITY = 2
 
 
 class BearSprite:
