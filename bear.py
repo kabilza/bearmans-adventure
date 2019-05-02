@@ -33,7 +33,14 @@ class EnemySprite:
         self.sprite = arcade.Sprite('images/enemy1.png',scale = SPRITE_SCALING)
     def draw(self,x,y):
         self.sprite.set_position(x,y)
-        self.sprite.draw()    
+        self.sprite.draw()
+
+class DiamondSprite:
+    def __init__(self):
+        self.sprite = arcade.Sprite('images/diamond.png',scale = SPRITE_SCALING)
+    def draw(self,x,y):
+        self.sprite.set_position(x,y)
+        self.sprite.draw()   
 
 
 class BearWindow(arcade.Window):
@@ -55,6 +62,10 @@ class BearWindow(arcade.Window):
         self.enemy_sprite.center_x = SCREEN_WIDTH - 100
         self.enemy_sprite.center_y = SCREEN_HEIGHT - 100
 
+        self.diamond_sprite = DiamondSprite()
+        self.diamond_sprite.center_x = SCREEN_WIDTH - 100
+        self.diamond_sprite.center_y = SCREEN_HEIGHT - 100
+
         self.background = arcade.load_texture("images/BG.png")
         self.world = World(width,height)
         arcade.set_background_color(arcade.color.SILVER)
@@ -67,6 +78,10 @@ class BearWindow(arcade.Window):
         for i in self.world.enemy:
             self.enemy_sprite.draw(i.x,i.y)
 
+    def draw_diamond(self):
+        for i in self.world.diamond:
+            self.diamond_sprite.draw(i.x,i.y)
+
     def on_draw(self):
         arcade.start_render()
         arcade.draw_texture_rectangle(SCREEN_WIDTH // 2, SCREEN_HEIGHT // 2, SCREEN_WIDTH, SCREEN_HEIGHT, self.background)
@@ -74,7 +89,7 @@ class BearWindow(arcade.Window):
 
         start_x = 100
         start_y = 1100
-        arcade.draw_text(f"Time Lapse: {int(self.world.time)//60}:{int(self.world.time)%60:.1f}", start_x, start_y, arcade.color.BLACK, 30)
+        arcade.draw_text(f"Survival Time: {int(self.world.ti09225789me)//60}:{int(self.world.time)%60:.1f}", start_x, start_y, arcade.color.BLACK, 30)
         arcade.draw_text(f"Bearman's Adventure", 1650, 1100, arcade.color.BLACK, 30)
         arcade.draw_text(f"Lives : {self.world.lives + 2}", 600, 1100, arcade.color.BLACK, 30)
 
@@ -85,6 +100,7 @@ class BearWindow(arcade.Window):
 
         self.draw_plat()   
         self.draw_enemy()
+        self.draw_diamond()
 
         if self.world.bear.die == 1:
             if self.world.session != 0:
@@ -111,6 +127,7 @@ class BearWindow(arcade.Window):
             return
         self.world.update(delta)
         self.world.time += delta
+        print(len(self.world.diamond))
 
         
 

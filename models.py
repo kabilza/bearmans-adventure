@@ -129,6 +129,28 @@ class Enemy:
         else:
             return False
 
+class Diamond:
+    def __init__(self, world, x, y):
+        self.world = world
+        self.x = x
+        self.y = y
+        self.vx = 0
+        self.vy = 0
+        self.pow = 1
+    def update(self, delta):
+        if self.check_enemy():
+            self.world.bear.die = 1
+        else:
+            self.x = self.x
+            self.y = self.y
+    
+    def hit_bear2(self):
+        if self.x-60 <= self.world.bear.x <= self.x+60:
+            if self.y-60 <= self.world.bear.y <= self.y+60:
+                return True
+        else:
+            return False
+
 class World:
     def __init__(self, width, height):
         self.width = width
@@ -137,6 +159,7 @@ class World:
         self.bear = Bear(self, 60, 175)
         self.platform = []
         self.enemy = []
+        self.diamond = []
         self.time = 0
         self.session = 0
         self.lives = 6
@@ -167,6 +190,12 @@ class World:
         for ene in self.enemy:
             cl.append(ene.hit_bear())
         return True in cl
+
+    def diamond_on_bear(self):
+        cl3 = []
+        for dia in self.diamond:
+            cl3.append(dia.hit_bear2())
+        return True in cl3
     
     def on_key_press(self,key,key_modifier):
         
@@ -184,6 +213,8 @@ class World:
         if self.platform[-1].y <= 0:
             for i in range(0,11,1):
                 self.build_plat()
+
+            self.diamond.append(Diamond(self, (random.randrange(0,2048,430)), (random.randrange(500,1024,179))))
 
             for i in range(5,17,1):
                 self.platform.pop(i)
@@ -204,6 +235,14 @@ class World:
         
         if self.ene_on_bear():
             self.bear.die = 1
+
+        if self.diamond_on_bear():
+            self.time += 10
+            self.diamond.pop(0)
+            
+        if len(self.diamond) == 3:
+            self.bear.die = 1
+            self.diamond.clear()
         
             
             
