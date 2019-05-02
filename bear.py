@@ -76,6 +76,8 @@ class BearWindow(arcade.Window):
         start_y = 1100
         arcade.draw_text(f"Time Lapse: {int(self.world.time)//60}:{int(self.world.time)%60:.1f}", start_x, start_y, arcade.color.BLACK, 30)
         arcade.draw_text(f"Bearman's Adventure", 1650, 1100, arcade.color.BLACK, 30)
+        arcade.draw_text(f"Lives : {self.world.lives + 2}", 600, 1100, arcade.color.BLACK, 30)
+
 
         
 
@@ -90,6 +92,9 @@ class BearWindow(arcade.Window):
                 arcade.draw_text(f"You survived for {int(self.world.time)//60}:{int(self.world.time)%60:.1f}!!!", 553, 700, arcade.color.YELLOW, 59)
                 arcade.draw_text(f"GAME OVER!!!", 553, 600, arcade.color.BLACK, 60)
                 arcade.draw_text(f"GAME OVER!!!", 551, 600, arcade.color.WHITE, 59)
+                if self.world.lives == -2:
+                    self.world.lives = 6
+                
 
             arcade.draw_text(f"Press any key to START!!!", 553, 500, arcade.color.BLACK, 60)
             arcade.draw_text(f"Press any key to START!!!", 551, 500, arcade.color.WHITE, 59)

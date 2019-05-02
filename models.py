@@ -51,15 +51,6 @@ class Bear:
         if self.y < 0:
             self.die =  1
         
-        # if self.world.check_bear_on_plat():
-        #     self.y += self.vy - GRAVITY
-        #     if self.jumpcount == True:
-        #         self.y += self.vy
-        #         self.vy += GRAVITY
-        # else:
-        #     self.jumpcount = False
-        #     self.vy = 0
-
         if self.jumpcount:
             self.y += self.vy
             self.vy += GRAVITY
@@ -72,8 +63,11 @@ class Bear:
 
     def on_key_press(self, key, key_modifier):
         if self.die:
+            self.world.lives -= 1
             self.die = 0
-            self.world.time = 0
+            if self.world.lives == -2:
+                self.world.lives = 6
+                self.world.time = 0
             self.world.session += 1
             self.x = 60
             self.y = 200
@@ -123,8 +117,6 @@ class Enemy:
         self.vy = 0
     def update(self, delta):
         if self.check_enemy():
-            self.world.time -= 10
-            print("HELP")
             self.world.bear.die = 1
         else:
             self.x = self.x
@@ -142,11 +134,12 @@ class World:
         self.width = width
         self.height = height
 
-        self.bear = Bear(self, 60, 200)
+        self.bear = Bear(self, 60, 175)
         self.platform = []
         self.enemy = []
         self.time = 0
         self.session = 0
+        self.lives = 6
     
         #lv1
         self.platform.append(Platform(self, 0, 100))
