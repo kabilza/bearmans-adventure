@@ -163,6 +163,7 @@ class World:
         self.time = 0
         self.session = 0
         self.lives = 6
+        self.highscore = 0
     
         #lv1
         self.platform.append(Platform(self, 0, 100))
@@ -239,7 +240,7 @@ class World:
         if self.diamond_on_bear():
             self.time += 10
             self.diamond.pop(0)
-            
+
         if len(self.diamond) == 3:
             self.bear.die = 1
             self.diamond.clear()

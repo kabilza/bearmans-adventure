@@ -89,9 +89,11 @@ class BearWindow(arcade.Window):
 
         start_x = 100
         start_y = 1100
-        arcade.draw_text(f"Survival Time: {int(self.world.ti09225789me)//60}:{int(self.world.time)%60:.1f}", start_x, start_y, arcade.color.BLACK, 30)
+        arcade.draw_text(f"Survival Time: {int(self.world.time)//60}:{int(self.world.time)%60:.1f}", start_x, start_y, arcade.color.BLACK, 30)
         arcade.draw_text(f"Bearman's Adventure", 1650, 1100, arcade.color.BLACK, 30)
         arcade.draw_text(f"Lives : {self.world.lives + 2}", 600, 1100, arcade.color.BLACK, 30)
+        arcade.draw_text(f"High Score : {self.world.highscore}", 900, 1100, arcade.color.BLACK, 30)
+
 
 
         
@@ -109,7 +111,9 @@ class BearWindow(arcade.Window):
                 arcade.draw_text(f"GAME OVER!!!", 553, 600, arcade.color.BLACK, 60)
                 arcade.draw_text(f"GAME OVER!!!", 551, 600, arcade.color.WHITE, 59)
                 if self.world.lives == -2:
+                    self.world.highscore = int(self.world.time)
                     self.world.lives = 6
+                    
                 
 
             arcade.draw_text(f"Press any key to START!!!", 553, 500, arcade.color.BLACK, 60)
@@ -127,7 +131,8 @@ class BearWindow(arcade.Window):
             return
         self.world.update(delta)
         self.world.time += delta
-        print(len(self.world.diamond))
+        if self.world.lives == -2:
+            self.world.highscore = int(self.world.time)
 
         
 
