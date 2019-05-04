@@ -12,6 +12,7 @@ JUMP_SPEED = 14
 GRAVITY = 1
 #1
 
+HIGHSCORE = 0
 
 class BearSprite:
     def __init__(self):
@@ -40,6 +41,13 @@ class DiamondSprite:
         self.sprite = arcade.Sprite('images/diamond.png',scale = SPRITE_SCALING)
     def draw(self,x,y):
         self.sprite.set_position(x,y)
+        self.sprite.draw()  
+
+class MenuStartSprite:
+    def __init__(self):
+        self.sprite = arcade.Sprite('images/start.png',scale = 3)
+    def draw(self,x,y):
+        self.sprite.set_position(x,y)
         self.sprite.draw()   
 
 
@@ -66,6 +74,10 @@ class BearWindow(arcade.Window):
         self.diamond_sprite.center_x = SCREEN_WIDTH - 100
         self.diamond_sprite.center_y = SCREEN_HEIGHT - 100
 
+        self.menu_sprite = MenuStartSprite()
+        self.menu_sprite.center_x = SCREEN_WIDTH - 100
+        self.menu_sprite.center_y = SCREEN_HEIGHT - 100
+
         self.background = arcade.load_texture("images/BG.png")
         self.world = World(width,height)
         arcade.set_background_color(arcade.color.SILVER)
@@ -82,9 +94,18 @@ class BearWindow(arcade.Window):
         for i in self.world.diamond:
             self.diamond_sprite.draw(i.x,i.y)
 
+    def draw_menulist(self):
+        for i in self.world.menulist:
+            self.menu_sprite.draw(i.x,i.y)
+
     def on_draw(self):
         arcade.start_render()
         arcade.draw_texture_rectangle(SCREEN_WIDTH // 2, SCREEN_HEIGHT // 2, SCREEN_WIDTH, SCREEN_HEIGHT, self.background)
+
+        # if self.world.gamestart == False:
+        #     self.draw_menulist()
+            
+
 
 
         start_x = 100
@@ -92,7 +113,7 @@ class BearWindow(arcade.Window):
         arcade.draw_text(f"Survival Time: {int(self.world.time)//60}:{int(self.world.time)%60:.1f}", start_x, start_y, arcade.color.BLACK, 30)
         arcade.draw_text(f"Bearman's Adventure", 1650, 1100, arcade.color.BLACK, 30)
         arcade.draw_text(f"Lives : {self.world.lives + 2}", 600, 1100, arcade.color.BLACK, 30)
-        arcade.draw_text(f"High Score : {self.world.highscore}", 900, 1100, arcade.color.BLACK, 30)
+        arcade.draw_text(f"High Score : {HIGHSCORE}", 900, 1100, arcade.color.BLACK, 30)
 
 
 
@@ -132,7 +153,7 @@ class BearWindow(arcade.Window):
         self.world.update(delta)
         self.world.time += delta
         if self.world.lives == -2:
-            self.world.highscore = int(self.world.time)
+            HIGHSCORE = self.world.time
 
         
 

@@ -151,6 +151,17 @@ class Diamond:
         else:
             return False
 
+class MenuStart:
+    def __init__(self, world, x, y):
+        self.world = world
+        self.x = x
+        self.y = y
+        self.vx = 0
+        self.vy = 0
+    def update(self, delta):
+        self.x = self.x
+        self.y = self.y
+
 class World:
     def __init__(self, width, height):
         self.width = width
@@ -160,12 +171,15 @@ class World:
         self.platform = []
         self.enemy = []
         self.diamond = []
+        self.menulist = []
         self.time = 0
         self.session = 0
         self.lives = 6
         self.highscore = 0
+        self.gamestart = False
     
-        #lv1
+        self.menulist.append(MenuStart(self, 1024,500))
+
         self.platform.append(Platform(self, 0, 100))
         self.platform.append(Platform(self, 607, 100))
         self.platform.append(Platform(self, 1214, 100))
@@ -174,7 +188,7 @@ class World:
         
     def build_plat(self):
         n1 = random.randrange(-300,2048,430)
-        n2 = random.randrange(500,1024,179)
+        n2 = random.randrange(550,1024,179)
         if n1 == self.platform[-1].x:
             n1 += 200
         self.platform.append(Platform(self, n1, n2))
@@ -215,7 +229,7 @@ class World:
             for i in range(0,11,1):
                 self.build_plat()
 
-            self.diamond.append(Diamond(self, (random.randrange(0,2048,430)), (random.randrange(500,1024,179))))
+            self.diamond.append(Diamond(self, (random.randrange(0,1900,430)), (random.randrange(500,1024,179))))
 
             for i in range(5,17,1):
                 self.platform.pop(i)
