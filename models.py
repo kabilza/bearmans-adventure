@@ -1,5 +1,6 @@
 import arcade.key, time, random
 
+
 MOVEMENT_SPEED = 4
 DIR_STILL = 0
 DIR_UP = 1
@@ -9,8 +10,10 @@ DIR_LEFT = 4
 
 MOVEMENT_SPEED = 5
 JUMP_SPEED = 18
-GRAVITY = -1
+GRAVITY = -0.5
 IS_ALIVE = True
+
+MENU = ["START", "HOW_TO_PLAY", "MAIN"]
 
 n3 = random.randrange(0,100,25)
 
@@ -161,6 +164,15 @@ class MenuStart:
     def update(self, delta):
         self.x = self.x
         self.y = self.y
+    def on_key_press(self, key, key_modifier):
+        if key == arcade.key.ENTER:
+            self.world.start1 = MENU[0]
+        if key == arcade.key.DOWN:
+            self.world.start1 = MENU[1]
+            
+    # def on_mouse_press(self, x, y, button, modifiers):
+    #     if button == arcade.MOUSE_BUTTON_LEFT:
+    #         BearWindow.draw_game_elements()
 
 class World:
     def __init__(self, width, height):
@@ -175,10 +187,11 @@ class World:
         self.time = 0
         self.session = 0
         self.lives = 6
-        self.highscore = 0
-        self.gamestart = False
-    
-        self.menulist.append(MenuStart(self, 1024,500))
+        self.highscore = []
+        self.start1 = MENU[2]
+        self.getlife = 0
+        
+        self.menulist.append(MenuStart(self, 1024,400))
 
         self.platform.append(Platform(self, 0, 100))
         self.platform.append(Platform(self, 607, 100))
@@ -213,8 +226,8 @@ class World:
         return True in cl3
     
     def on_key_press(self,key,key_modifier):
-        
         self.bear.on_key_press(key,key_modifier)
+        self.menulist[0].on_key_press(key,key_modifier)
 
     def on_key_release(self,key,key_modifier):
         if self.bear.die == 1:
@@ -254,10 +267,16 @@ class World:
         if self.diamond_on_bear():
             self.time += 10
             self.diamond.pop(0)
+            self.getlife += 1
+
+        if self.getlife >= 5:
+            self.lives += 1
+            self.getlife = 0
 
         if len(self.diamond) == 3:
             self.bear.die = 1
             self.diamond.clear()
+            
         
             
             
