@@ -101,6 +101,8 @@ class BearWindow(arcade.Window):
         self.logo.center_x = SCREEN_WIDTH - 100
         self.logo.center_y = SCREEN_HEIGHT - 100
 
+        self.jump_sound = arcade.sound.load_sound("sounds/phaseJump1.wav")
+
         self.background = arcade.load_texture("images/BG.png")
         self.world = World(width,height)
         arcade.set_background_color(arcade.color.SILVER)
@@ -124,7 +126,7 @@ class BearWindow(arcade.Window):
     def draw_game_elements(self):
         start_x = 100
         start_y = 1100
-        arcade.draw_text(f"Survival Time: {int(self.world.time)//60}:{int(self.world.time)%60:.1f}", start_x, start_y, arcade.color.BLACK, 30)
+        arcade.draw_text(f"Survival Time: {int(self.world.time)//60}:{int(self.world.time)%60}", start_x, start_y, arcade.color.BLACK, 30)
         arcade.draw_text(f"Bearman's Adventure", 1650, 1100, arcade.color.BLACK, 30)
         arcade.draw_text(f"Lives : {self.world.lives + 2}", 600, 1100, arcade.color.BLACK, 30)
         arcade.draw_text(f"High Score : {HIGHSCORE}", 900, 1100, arcade.color.BLACK, 30)
@@ -148,9 +150,6 @@ class BearWindow(arcade.Window):
                     self.world.highscore.append(int(self.world.time))
                     self.world.lives = 6
                     
-                    
-                
-
             arcade.draw_text(f"Press any key to retry!!!", 553, 500, arcade.color.BLACK, 60)
             arcade.draw_text(f"Press any key to retry!!!", 551, 500, arcade.color.WHITE, 59)
 
@@ -162,8 +161,8 @@ class BearWindow(arcade.Window):
             self.logo.draw(SCREEN_WIDTH//2, (SCREEN_HEIGHT//2 + 300))
             arcade.draw_text(f"PRESS ENTER TO", 682, 500, arcade.color.BLACK, 60)
             arcade.draw_text(f"PRESS ENTER TO", 682, 500, arcade.color.RED, 59)
-            arcade.draw_text(f"PRESS DOWN for HOW TO PLAY", 432, 262, arcade.color.BLACK, 60)
-            arcade.draw_text(f"PRESS DOWN for HOW TO PLAY", 430, 260, arcade.color.BLUE, 60)
+            arcade.draw_text(f"PRESS DOWN for HOW TO PLAY", 432, 212, arcade.color.BLACK, 60)
+            arcade.draw_text(f"PRESS DOWN for HOW TO PLAY", 430, 210, arcade.color.BLUE, 60)
             self.draw_menulist()
 
         if self.world.start1 == "START":
@@ -180,14 +179,14 @@ class BearWindow(arcade.Window):
         self.world.on_key_release(key,key_modifier)
 
     def update(self, delta):
-        
-
         if self.world.bear.die == 1:
             return
         self.world.update(delta)
         self.world.time += delta
         if self.world.lives == -2:
             HIGHSCORE = self.world.highscore(-1)
+        
+            
 
         
 

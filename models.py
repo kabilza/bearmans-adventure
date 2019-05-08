@@ -1,4 +1,4 @@
-import arcade.key, time, random
+import arcade.key, time, random, arcade.sound
 
 
 MOVEMENT_SPEED = 4
@@ -17,16 +17,7 @@ MENU = ["START", "HOW_TO_PLAY", "MAIN"]
 
 n3 = random.randrange(0,100,25)
 
-DIR_OFFSETS = {DIR_STILL: (0, 0),
-               DIR_UP: (0, 1),
-               DIR_RIGHT: (1, 0),
-               DIR_DOWN: (0, -1),
-               DIR_LEFT: (-1, 0)}
 
-KEY_MAP = { arcade.key.UP: DIR_UP,
-            arcade.key.DOWN: DIR_DOWN,
-            arcade.key.LEFT: DIR_LEFT,
-            arcade.key.RIGHT: DIR_RIGHT, }
 
 class Bear:
     def __init__(self, world, x, y):
@@ -169,10 +160,6 @@ class MenuStart:
             self.world.start1 = MENU[0]
         if key == arcade.key.DOWN:
             self.world.start1 = MENU[1]
-            
-    # def on_mouse_press(self, x, y, button, modifiers):
-    #     if button == arcade.MOUSE_BUTTON_LEFT:
-    #         BearWindow.draw_game_elements()
 
 class World:
     def __init__(self, width, height):
@@ -263,6 +250,7 @@ class World:
         
         if self.ene_on_bear():
             self.bear.die = 1
+            self.getlife = 0
 
         if self.diamond_on_bear():
             self.time += 10
