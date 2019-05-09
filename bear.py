@@ -63,7 +63,14 @@ class LOGOSprite:
         self.sprite = arcade.Sprite('images/GAME LOGO.png',scale = 0.4)
     def draw(self,x,y):
         self.sprite.set_position(x,y)
-        self.sprite.draw()        
+        self.sprite.draw()
+
+class WaspSprite:
+    def __init__(self):
+        self.sprite = arcade.Sprite('images/wasp.png',scale = 1)
+    def draw(self,x,y):
+        self.sprite.set_position(x,y)
+        self.sprite.draw()           
     
 
 class BearWindow(arcade.Window):
@@ -101,6 +108,10 @@ class BearWindow(arcade.Window):
         self.logo.center_x = SCREEN_WIDTH - 100
         self.logo.center_y = SCREEN_HEIGHT - 100
 
+        self.wasp = WaspSprite()
+        self.wasp.center_x = SCREEN_WIDTH - 100
+        self.wasp.center_y = SCREEN_HEIGHT - 100
+
         self.jump_sound = arcade.sound.load_sound("sounds/phaseJump1.wav")
 
         self.background = arcade.load_texture("images/BG.png")
@@ -123,6 +134,10 @@ class BearWindow(arcade.Window):
         for i in self.world.menulist:
             self.menu_sprite.draw(i.x,i.y)
 
+    def draw_wasp(self):
+        for i in self.world.wasp:
+            self.wasp.draw(i.x,i.y)
+
     def draw_game_elements(self):
         start_x = 100
         start_y = 1100
@@ -135,10 +150,12 @@ class BearWindow(arcade.Window):
         self.draw_plat()   
         self.draw_enemy()
         self.draw_diamond()
+        self.draw_wasp()
 
         if self.world.bear.die == 1:
             if self.world.session != 0:
-                arcade.draw_text(f"Remaining Lives = {self.world.lives + 2}", 553, 700, arcade.color.BLACK, 60)
+                arcade.draw_rectangle_filled(SCREEN_WIDTH//2, SCREEN_HEIGHT//2, 1200, 650, arcade.color.BLACK)
+                arcade.draw_text(f"Remaining Lives = {self.world.lives + 2}", 553, 700, arcade.color.YELLOW, 60)
                 arcade.draw_text(f"Remaining Lives = {self.world.lives + 2}", 553, 700, arcade.color.YELLOW, 59)
                 if self.world.lives == -2:
                     arcade.draw_text(f"You survived for {int(self.world.time)//60}:{int(self.world.time)%60:.1f}!!!", 553, 700, arcade.color.BLACK, 60)
@@ -157,10 +174,12 @@ class BearWindow(arcade.Window):
 
         if self.world.start1 == "MAIN":
             self.logo.draw(SCREEN_WIDTH//2, (SCREEN_HEIGHT//2 + 300))
+            arcade.draw_rectangle_filled(SCREEN_WIDTH//2, SCREEN_HEIGHT//2-200, 1300, 60, arcade.color.BLACK)
+            arcade.draw_rectangle_filled(SCREEN_WIDTH//2, SCREEN_HEIGHT//2-335, 1300, 85, arcade.color.BLACK)
             arcade.draw_text(f"PRESS ENTER TO", 682, 500, arcade.color.BLACK, 60)
             arcade.draw_text(f"PRESS ENTER TO", 682, 500, arcade.color.RED, 59)
-            arcade.draw_text(f"PRESS DOWN for HOW TO PLAY", 432, 212, arcade.color.BLACK, 60)
-            arcade.draw_text(f"PRESS DOWN for HOW TO PLAY", 430, 210, arcade.color.BLUE, 60)
+            arcade.draw_text(f"PRESS DOWN for HOW TO PLAY", 432, 212, arcade.color.RED, 60)
+            arcade.draw_text(f"PRESS DOWN for HOW TO PLAY", 430, 210, arcade.color.WHITE, 60)
             self.draw_menulist()
 
         if self.world.start1 == "START":

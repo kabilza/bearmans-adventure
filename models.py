@@ -132,15 +132,32 @@ class Diamond:
         self.vy = 0
         self.pow = 1
     def update(self, delta):
+        self.x = self.x
+        self.y = self.y
+    
+    def hit_bear2(self):
+        if self.x-60 <= self.world.bear.x <= self.x+60:
+            if self.y-60 <= self.world.bear.y <= self.y+60:
+                return True
+        else:
+            return False
+
+class Wasp:
+    def __init__(self, world, x, y):
+        self.world = world
+        self.x = x
+        self.y = y
+        self.vx = 0
+        self.vy = 0
+    def update(self, delta):
         if self.check_enemy():
             self.world.bear.die = 1
         else:
             self.x = self.x
             self.y = self.y
-    
-    def hit_bear2(self):
-        if self.x-60 <= self.world.bear.x <= self.x+60:
-            if self.y-60 <= self.world.bear.y <= self.y+60:
+    def hit_bear3(self):
+        if self.x-42 <= self.world.bear.x <= self.x+42:
+            if self.y-40 <= self.world.bear.y <= self.y+40:
                 return True
         else:
             return False
@@ -171,6 +188,7 @@ class World:
         self.enemy = []
         self.diamond = []
         self.menulist = []
+        self.wasp = []
         self.time = 0
         self.session = 0
         self.lives = 6
@@ -178,7 +196,7 @@ class World:
         self.start1 = MENU[2]
         self.getlife = 0
         
-        self.menulist.append(MenuStart(self, 1024,400))
+        self.menulist.append(MenuStart(self, 1024,375))
 
         self.platform.append(Platform(self, 0, 100))
         self.platform.append(Platform(self, 607, 100))
@@ -193,6 +211,7 @@ class World:
             n1 += 200
         self.platform.append(Platform(self, n1, n2))
         self.enemy.append(Enemy(self, n1+n3, n2+53))
+        self.wasp.append(Wasp(self, n1+n2, n2+n3))
     
     def check_bear_on_plat(self):
         check_list = []
@@ -211,6 +230,12 @@ class World:
         for dia in self.diamond:
             cl3.append(dia.hit_bear2())
         return True in cl3
+
+    def wasp_on_bear(self):
+        cl4 = []
+        for wasp in self.wasp:
+            cl4.append(wasp.hit_bear3())
+        return True in cl4
     
     def on_key_press(self,key,key_modifier):
         self.bear.on_key_press(key,key_modifier)
@@ -247,8 +272,15 @@ class World:
         
         for i in range(len(self.enemy)):
             self.enemy[i].y -= 2
+
+        for i in range(len(self.wasp)):
+            self.wasp[i].y -= 4
         
         if self.ene_on_bear():
+            self.bear.die = 1
+            self.getlife = 0
+
+        if self.wasp_on_bear():
             self.bear.die = 1
             self.getlife = 0
 
