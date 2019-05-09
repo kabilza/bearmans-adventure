@@ -238,7 +238,7 @@ class World:
             for i in range(0,13,1):
                 self.enemy.pop(i)
             
-        while len(self.platform) < 50:
+        while len(self.platform) < 45:
             self.build_plat()
             self.enemy.pop(0)
 

@@ -12,7 +12,7 @@ JUMP_SPEED = 14
 
 current_state = 0
 
-HIGHSCORE = 0
+
 
 
 class BearSprite:
@@ -129,7 +129,6 @@ class BearWindow(arcade.Window):
         arcade.draw_text(f"Survival Time: {int(self.world.time)//60}:{int(self.world.time)%60}", start_x, start_y, arcade.color.BLACK, 30)
         arcade.draw_text(f"Bearman's Adventure", 1650, 1100, arcade.color.BLACK, 30)
         arcade.draw_text(f"Lives : {self.world.lives + 2}", 600, 1100, arcade.color.BLACK, 30)
-        arcade.draw_text(f"High Score : {HIGHSCORE}", 900, 1100, arcade.color.BLACK, 30)
 
         self.bear_sprite.draw(self.world.bear.x,self.world.bear.y)
 
@@ -147,7 +146,6 @@ class BearWindow(arcade.Window):
                     arcade.draw_text(f"GAME OVER!!!", 553, 600, arcade.color.BLACK, 60)
                     arcade.draw_text(f"GAME OVER!!!", 551, 600, arcade.color.WHITE, 59)
                 if self.world.lives == -2:
-                    self.world.highscore.append(int(self.world.time))
                     self.world.lives = 6
                     
             arcade.draw_text(f"Press any key to retry!!!", 553, 500, arcade.color.BLACK, 60)
