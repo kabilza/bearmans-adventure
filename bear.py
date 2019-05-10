@@ -12,9 +12,6 @@ JUMP_SPEED = 14
 
 current_state = 0
 
-
-
-
 class BearSprite:
     def __init__(self):
         self.sprite = arcade.Sprite('images/BearSprite1.png',scale = SPRITE_SCALING)
@@ -75,7 +72,7 @@ class WaspSprite:
 
 class BearWindow(arcade.Window):
     def __init__(self, width, height):
-        super().__init__(width, height, "Bear's Adventure")
+        super().__init__(width, height, "Bearman's Adventure")
 
         self.platform_sprite = arcade.SpriteList
         self.game_over = False
@@ -173,7 +170,7 @@ class BearWindow(arcade.Window):
         arcade.draw_texture_rectangle(SCREEN_WIDTH // 2, SCREEN_HEIGHT // 2, SCREEN_WIDTH, SCREEN_HEIGHT, self.background)
 
         if self.world.start1 == "MAIN":
-            self.logo.draw(SCREEN_WIDTH//2, (SCREEN_HEIGHT//2 + 300))
+            self.logo.draw(SCREEN_WIDTH//2, (SCREEN_HEIGHT//2 + 250))
             arcade.draw_rectangle_filled(SCREEN_WIDTH//2, SCREEN_HEIGHT//2-200, 1300, 60, arcade.color.BLACK)
             arcade.draw_rectangle_filled(SCREEN_WIDTH//2, SCREEN_HEIGHT//2-335, 1300, 85, arcade.color.BLACK)
             arcade.draw_text(f"PRESS ENTER TO", 682, 500, arcade.color.BLACK, 60)
@@ -200,9 +197,6 @@ class BearWindow(arcade.Window):
             return
         self.world.update(delta)
         self.world.time += delta
-        if self.world.lives == -2:
-            HIGHSCORE = self.world.highscore(-1)
-        
             
 
         

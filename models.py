@@ -192,7 +192,6 @@ class World:
         self.time = 0
         self.session = 0
         self.lives = 6
-        self.highscore = []
         self.start1 = MENU[2]
         self.getlife = 0
         
@@ -258,11 +257,16 @@ class World:
 
             for i in range(5,17,1):
                 self.platform.pop(i)
-
-        if self.enemy[-1].y <= 0:
-            for i in range(0,13,1):
+                
+        
+        if len(self.enemy) > 23:
+            for i in range(0,11,1):
                 self.enemy.pop(i)
-            
+
+        if len(self.wasp) > 23:
+            for i in range(0,12,1):
+                self.wasp.pop(i)
+
         while len(self.platform) < 45:
             self.build_plat()
             self.enemy.pop(0)
