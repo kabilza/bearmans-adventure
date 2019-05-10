@@ -2,8 +2,8 @@ from models import Bear, World
 
 import arcade
 
-SCREEN_WIDTH = 2048
-SCREEN_HEIGHT = 1152
+SCREEN_WIDTH = 1440
+SCREEN_HEIGHT = 900
 
 SPRITE_SCALING = 1
 
@@ -43,21 +43,21 @@ class DiamondSprite:
 
 class MenuStartSprite:
     def __init__(self):
-        self.sprite = arcade.Sprite('images/start.png',scale = 3)
+        self.sprite = arcade.Sprite('images/start.png',scale = 2)
     def draw(self,x,y):
         self.sprite.set_position(x,y)
         self.sprite.draw()   
 
 class HTPSprite:
     def __init__(self):
-        self.sprite = arcade.Sprite('images/How to play.png',scale = 1.55)
+        self.sprite = arcade.Sprite('images/How to play.png',scale = 1.2)
     def draw(self,x,y):
         self.sprite.set_position(x,y)
         self.sprite.draw()
 
 class LOGOSprite:
     def __init__(self):
-        self.sprite = arcade.Sprite('images/GAME LOGO.png',scale = 0.4)
+        self.sprite = arcade.Sprite('images/GAME LOGO.png',scale = 0.3)
     def draw(self,x,y):
         self.sprite.set_position(x,y)
         self.sprite.draw()
@@ -137,10 +137,10 @@ class BearWindow(arcade.Window):
 
     def draw_game_elements(self):
         start_x = 100
-        start_y = 1100
+        start_y = 850
         arcade.draw_text(f"Survival Time: {int(self.world.time)//60}:{int(self.world.time)%60}", start_x, start_y, arcade.color.BLACK, 30)
-        arcade.draw_text(f"Bearman's Adventure", 1650, 1100, arcade.color.BLACK, 30)
-        arcade.draw_text(f"Lives : {self.world.lives + 2}", 600, 1100, arcade.color.BLACK, 30)
+        arcade.draw_text(f"Bearman's Adventure", 1042, 850, arcade.color.BLACK, 30)
+        arcade.draw_text(f"Lives : {self.world.lives + 1}", 550, 850, arcade.color.BLACK, 30)
 
         self.bear_sprite.draw(self.world.bear.x,self.world.bear.y)
 
@@ -152,18 +152,21 @@ class BearWindow(arcade.Window):
         if self.world.bear.die == 1:
             if self.world.session != 0:
                 arcade.draw_rectangle_filled(SCREEN_WIDTH//2, SCREEN_HEIGHT//2, 1200, 650, arcade.color.BLACK)
-                arcade.draw_text(f"Remaining Lives = {self.world.lives + 2}", 553, 700, arcade.color.YELLOW, 60)
-                arcade.draw_text(f"Remaining Lives = {self.world.lives + 2}", 553, 700, arcade.color.YELLOW, 59)
+                arcade.draw_text(f"Remaining Lives = {self.world.lives + 1}", 353, 700, arcade.color.YELLOW, 60)
+                arcade.draw_text(f"Remaining Lives = {self.world.lives + 1}", 353, 700, arcade.color.YELLOW, 59)
+                if self.world.lives == -1:
+                    arcade.draw_text(f"You survived for {int(self.world.time)//60}:{int(self.world.time)%60:.1f}!!!", 153, 300, arcade.color.BLACK, 60)
+                    arcade.draw_text(f"You survived for {int(self.world.time)//60}:{int(self.world.time)%60:.1f}!!!", 153, 300, arcade.color.YELLOW, 59)
+                    arcade.draw_text(f"GAME OVER!!!", 153, 200, arcade.color.BLACK, 60)
+                    arcade.draw_text(f"GAME OVER!!!", 151, 200, arcade.color.WHITE, 59)
                 if self.world.lives == -2:
-                    arcade.draw_text(f"You survived for {int(self.world.time)//60}:{int(self.world.time)%60:.1f}!!!", 553, 700, arcade.color.BLACK, 60)
-                    arcade.draw_text(f"You survived for {int(self.world.time)//60}:{int(self.world.time)%60:.1f}!!!", 553, 700, arcade.color.YELLOW, 59)
-                    arcade.draw_text(f"GAME OVER!!!", 553, 600, arcade.color.BLACK, 60)
-                    arcade.draw_text(f"GAME OVER!!!", 551, 600, arcade.color.WHITE, 59)
-                if self.world.lives == -2:
-                    self.world.lives = 6
+                    self.world.lives = 8
+                    self.world.time = 0
                     
-            arcade.draw_text(f"Press any key to retry!!!", 553, 500, arcade.color.BLACK, 60)
-            arcade.draw_text(f"Press any key to retry!!!", 551, 500, arcade.color.WHITE, 59)
+                
+                    
+            arcade.draw_text(f"Press any key to retry!!!", 353, 600, arcade.color.BLACK, 60)
+            arcade.draw_text(f"Press any key to retry!!!", 351, 600, arcade.color.WHITE, 59)
 
     def on_draw(self):
         arcade.start_render()
@@ -171,12 +174,12 @@ class BearWindow(arcade.Window):
 
         if self.world.start1 == "MAIN":
             self.logo.draw(SCREEN_WIDTH//2, (SCREEN_HEIGHT//2 + 250))
-            arcade.draw_rectangle_filled(SCREEN_WIDTH//2, SCREEN_HEIGHT//2-200, 1300, 60, arcade.color.BLACK)
+            arcade.draw_rectangle_filled(SCREEN_WIDTH//2, 350, 1300, 60, arcade.color.BLACK)
             arcade.draw_rectangle_filled(SCREEN_WIDTH//2, SCREEN_HEIGHT//2-335, 1300, 85, arcade.color.BLACK)
-            arcade.draw_text(f"PRESS ENTER TO", 682, 500, arcade.color.BLACK, 60)
-            arcade.draw_text(f"PRESS ENTER TO", 682, 500, arcade.color.RED, 59)
-            arcade.draw_text(f"PRESS DOWN for HOW TO PLAY", 432, 212, arcade.color.RED, 60)
-            arcade.draw_text(f"PRESS DOWN for HOW TO PLAY", 430, 210, arcade.color.WHITE, 60)
+            arcade.draw_text(f"PRESS ENTER TO", 382, 430, arcade.color.BLACK, 60)
+            arcade.draw_text(f"PRESS ENTER TO", 382, 430, arcade.color.RED, 59)
+            arcade.draw_text(f"PRESS DOWN for HOW TO PLAY", 82, 92, arcade.color.RED, 60)
+            arcade.draw_text(f"PRESS DOWN for HOW TO PLAY", 80, 90, arcade.color.WHITE, 60)
             self.draw_menulist()
 
         if self.world.start1 == "START":

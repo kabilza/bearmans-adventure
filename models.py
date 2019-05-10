@@ -38,12 +38,14 @@ class Bear:
 
     def update(self, delta):
         if self.x < 0:
-            self.x = 2048
-        elif self.x > 2048:
+            self.x = 1440
+        elif self.x > 1440:
             self.x = 0
         self.x += self.vx
         if self.y < 0:
             self.die =  1
+        if self.y > 900:
+            self.y = 900
         
         if self.jumpcount:
             self.y += self.vy
@@ -191,11 +193,11 @@ class World:
         self.wasp = []
         self.time = 0
         self.session = 0
-        self.lives = 6
+        self.lives = 9
         self.start1 = MENU[2]
         self.getlife = 0
         
-        self.menulist.append(MenuStart(self, 1024,375))
+        self.menulist.append(MenuStart(self, 720,350))
 
         self.platform.append(Platform(self, 0, 100))
         self.platform.append(Platform(self, 607, 100))
@@ -253,7 +255,7 @@ class World:
             for i in range(0,11,1):
                 self.build_plat()
 
-            self.diamond.append(Diamond(self, (random.randrange(0,1900,430)), (random.randrange(500,1024,179))))
+            self.diamond.append(Diamond(self, (random.randrange(50,750,330)), (random.randrange(400,800,179))))
 
             for i in range(5,17,1):
                 self.platform.pop(i)
